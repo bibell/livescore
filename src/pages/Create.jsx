@@ -1,4 +1,3 @@
-//import React from 'react'
 import React, { useEffect } from 'react';
 import { ChartComponent, SeriesCollectionDirective, SeriesDirective, Inject, DateTime,Legend, 
  SplineAreaSeries} from '@syncfusion/ej2-react-charts';
@@ -10,17 +9,18 @@ import { Header } from '../../components';
 import { useState } from 'react';
 import authAxois from '../../requestHandler';
 
-const Financial = () => {
+
+const Create = () => {
   const [title,setTitle]=useState();
   const [source,setSource]=useState();
   const [myData,setmyData]=useState();
   const [news,setNews]=useState();
-  const [open, setOpen] = useState(false); // State to control the Modal
   const [club,setClub]=useState()
   const [progress,setProgress]=useState('none')
   const [link,setLink]=useState();
   const [auther,setAuther]=useState();
-  const [currentItem,setCurrentItem]=useState();
+  const [currentItem, setCurrentItem] = useState(null); 
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     source: '',
     title: '',
@@ -29,13 +29,12 @@ const Financial = () => {
     description: '',
   });
 
+
   const {currentMode} = useStateContext();
   
 useEffect(()=>{  
   fetchData();  
 },[])
-
-
 
 const handleDelete=()=>{
   console.log('write code to delete the element')
@@ -110,86 +109,83 @@ const fetchData=async()=>{
     }).catch(e=>e)
  }
 
-
-
-
   return (
     <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-    <Header category="Financial News" title="Finance Related News"/>
-    <Box>
-         <Box>
-             <Typography variant='h6'>Source</Typography>
-              <TextField value={auther} onChange={(e)=>{setAuther(e.target.value)}} placeholder='Place the Source' sx={{
+      <Header category="Lattest News" title="Recommended Lattest News"/>
+      <Box>
+           <Box>
+               <Typography variant='h6'>Source</Typography>
+                <TextField value={auther} onChange={(e)=>{setAuther(e.target.value)}} placeholder='Place the Source' sx={{
+                  border:'none',
+                  borderBottom:'2px solid green',
+                  width:'320px'
+                }}/>
+                <br/><br/>
+                <Typography variant='h6'>Clube</Typography>
+
+                <select value={club} onChange={(e)=>{setClub(e.target.value)}} style={{width:'300px',
+                                padding:'10px'
+                }}>
+                     <option>All</option>
+                     <option>Arsenal</option>
+                     <option>Man city</option>
+                     <option>Liverpool</option>
+                     <option>Man United</option>
+                     <option>chellsee</option>
+                     <option>wastham</option>
+                </select>
+                 <br/><br/>
+                 <Typography variant='h6'>Title</Typography>
+                <TextField value={title} onChange={(e)=>{setTitle(e.target.value)}} placeholder='Place the Source' sx={{
+                  border:'none',
+                  borderBottom:'2px solid green',
+                  width:'320px'
+                }}/>
+               <Typography variant='h6'>Link</Typography>
+               <TextField value={link} onChange={(e)=>{setLink(e.target.value)}} placeholder='publish your title...' sx={{
                 border:'none',
                 borderBottom:'2px solid green',
                 width:'320px'
-              }}/>
+               }}/>
               <br/><br/>
-              <Typography variant='h6'>Clube</Typography>
-
-              <select value={club} onChange={(e)=>{setClub(e.target.value)}} style={{width:'300px',
-                              padding:'10px'
-              }}>
-                   <option>All</option>
-                   <option>Arsenal</option>
-                   <option>Man city</option>
-                   <option>Liverpool</option>
-                   <option>Man United</option>
-                   <option>chellsee</option>
-                   <option>wastham</option>
-              </select>
-               <br/><br/>
-               <Typography variant='h6'>Title</Typography>
-              <TextField value={title} onChange={(e)=>{setTitle(e.target.value)}} placeholder='Place the Source' sx={{
-                border:'none',
-                borderBottom:'2px solid green',
-                width:'320px'
-              }}/>
-             <Typography variant='h6'>Link</Typography>
-             <TextField value={link} onChange={(e)=>{setLink(e.target.value)}} placeholder='publish your title...' sx={{
-              border:'none',
-              borderBottom:'2px solid green',
-              width:'320px'
-             }}/>
-            <br/><br/>
-            <Typography variant='h6'>Description</Typography> 
-           <textarea placeholder='Your Main Content goose here'
-             value={myData}
-             onChange={(e)=>{setmyData(e.target.value)}}
-             style={{
-              position:'absolute',
-              border:'1px solid black',
-              width:'320px',
-              height:'100px'
-             }}
-           ></textarea><br/><br/><br/><br/><br/>
-
-
-            <button style={{
-              backgroundColor:'rgb(0, 152, 247)',
-              color:'#fff',
-              padding:'10px',
-              marginLeft:'0px',
-              marginTop:'20px',
-              width:'330px'
-            }} onClick={()=>{
-              handlePost()
-              
-             
-              }}><CircularProgress sx={{
+              <Typography variant='h6'>Description</Typography> 
+             <textarea placeholder='Your Main Content goose here'
+               value={myData}
+               onChange={(e)=>{setmyData(e.target.value)}}
+               style={{
                 position:'absolute',
-                display:progress
-              }}/>Upload</button>
+                border:'1px solid black',
+                width:'320px',
+                height:'100px'
+               }}
+             ></textarea><br/><br/><br/><br/><br/>
 
-         </Box>
 
-         <Box sx={{
+              <button style={{
+                backgroundColor:'rgb(0, 152, 247)',
+                color:'#fff',
+                padding:'10px',
+                marginLeft:'0px',
+                marginTop:'20px',
+                width:'330px'
+              }} onClick={()=>{
+                handlePost()
+                
+               
+                }}><CircularProgress sx={{
+                  position:'absolute',
+                  display:progress
+                }}/>Upload</button>
+
+           </Box>
+
+           <Box sx={{
   position:{md:'absolute',xs:'relative'},
-  backgroundColor:'#f4f4f4',
+  backgroundColor:'#fff',
   width:'300px',
-  height:'750px',
+  height:'560px',
   marginLeft:{md:'450px',xs:'20px'},
-  marginTop:{md:'-730px',xs:'100px'},
+  marginTop:{md:'-600px',xs:'100px'},
   border:'1px solid gray',
   padding:'10px',
   overflow:'scroll',
@@ -198,9 +194,83 @@ const fetchData=async()=>{
    <Typography variant='h4' sx={{
    
    }}>Recent Post</Typography>
-   
-  {/***
-  news?.map((item, index) => {
+  
+   {/*** 
+   news?.map((item, index) => {
+  // Extract video ID from YouTube link
+  const videoId = item.link.split('v=')[1];
+  const ampersandPosition = videoId?.indexOf('&');
+  if(ampersandPosition !== -1) {
+    videoId = videoId.substring(0, ampersandPosition);
+  }
+
+  // Construct the thumbnail URL
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+  return (
+    <Stack key={index}>
+      <List>
+        <Box
+          sx={{
+            backgroundColor: '#f4f4f4',
+            padding: '10px',
+            margin: '10px',
+            borderRadius: '10px',
+            position: 'relative',
+          }}
+        >
+          <img
+            src={thumbnailUrl}
+            style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '30px',
+            }}
+            alt="YouTube Thumbnail"
+          />
+          <ListItem
+            sx={{
+              position: 'absolute',
+              fontSize: '12px',
+              marginLeft: '60px',
+              marginTop: '-50px',
+              fontWeight: 'bold',
+            }}
+          >
+            {item.source}
+          </ListItem>
+
+          <ListItem
+            sx={{
+              position: 'absolute',
+              fontSize: '10px',
+              width:'300px',
+              marginLeft: '60px',
+              marginTop: '-30px',
+            }}
+          >
+            {item.title}
+          </ListItem>
+
+          <ListItem
+            sx={{
+              fontSize: '9px',
+              marginLeft: '60px',
+              marginTop: '0px',
+            }}
+          >
+            On: {item.date} at {item.time}
+          </ListItem>
+          
+          <Typography>{item.description}</Typography>
+        </Box>
+      </List>
+    </Stack>
+  );
+})
+*****/}
+
+{news?.map((item, index) => {
         // Extract video ID from YouTube link
         let videoId = item.link.split('v=')[1];
         const ampersandPosition = videoId?.indexOf('&');
@@ -267,79 +337,6 @@ const fetchData=async()=>{
                 </ListItem>
 
                 <Typography>{item.description}</Typography>
-              </Box>
-            </List>
-          </Stack>
-        );
-      })
-      ***/}
-      {news?.map((item, index) => {
-        // Extract video ID from YouTube link
-        let videoId = item.link.split('v=')[1];
-        const ampersandPosition = videoId?.indexOf('&');
-        if (ampersandPosition !== -1) {
-          videoId = videoId.substring(0, ampersandPosition);
-        }
-
-        // Construct the thumbnail URL
-        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-
-        return (
-          <Stack key={index}>
-            <List>
-              <Box
-                sx={{
-                  backgroundColor: '#fff',
-                  padding: '10px',
-                  margin: '10px',
-                  borderRadius: '10px',
-                  position: 'relative',
-                }}
-              >
-                <img
-                  src={thumbnailUrl}
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '30px',
-                  }}
-                  alt="YouTube Thumbnail"
-                />
-                <ListItem
-                  sx={{
-                    position: 'absolute',
-                    fontSize: '12px',
-                    marginLeft: '60px',
-                    marginTop: '-50px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {item.source}
-                </ListItem>
-
-                <ListItem
-                  sx={{
-                    position: 'absolute',
-                    fontSize: '10px',
-                    width: '200px',
-                    marginLeft: '60px',
-                    marginTop: '-30px',
-                  }}
-                >
-                  {item.title}
-                </ListItem>
-
-                <ListItem
-                  sx={{
-                    fontSize: '9px',
-                    marginLeft: '60px',
-                    marginTop: '15px',
-                  }}
-                >
-                  On: {item.date} at {item.time}
-                </ListItem>
-
-                <Typography>{item.description}</Typography>
 
                 {/* Edit and Delete Buttons */}
                 <Box
@@ -372,8 +369,8 @@ const fetchData=async()=>{
 
         );
       })}
-</Box>
 
+</Box>
 {/* Modal for Editing */}
 <Modal
   open={open}
@@ -469,10 +466,10 @@ const fetchData=async()=>{
   </Box>
 </Modal>
 
-
-      </Box> 
-  </div>
+        </Box> 
+    </div>
+    
   )
 }
 
-export default Financial
+export default Create;

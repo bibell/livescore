@@ -474,7 +474,7 @@ export const links = [
     title: 'Dashboard',
     links: [
       {
-        name: 'ecommerce',
+        name: 'home',
         icon: <FiShoppingBag />,
       },
     ],
@@ -484,28 +484,28 @@ export const links = [
     title: 'Pages',
     links: [
       {
-        name: 'orders',
+        name: 'Post',
         icon: <AiOutlineShoppingCart />,
       },
       {
-        name: 'employees',
+        name: 'Users',
         icon: <IoMdContacts />,
       },
       {
-        name: 'customers',
+        name: 'employee',
         icon: <RiContactsLine />,
       },
     ],
   },
   {
-    title: 'Apps',
+    title: 'FootBall',
     links: [
       {
-        name: 'calendar',
+        name: 'Heighlight',
         icon: <AiOutlineCalendar />,
       },
       {
-        name: 'kanban',
+        name: 'adds',
         icon: <BsKanban />,
       },
       {
@@ -519,31 +519,75 @@ export const links = [
     ],
   },
   {
-    title: 'Charts',
+    title: 'News',
     links: [
       {
-        name: 'line',
+        name: 'Lattest-News',
         icon: <AiOutlineStock />,
       },
       {
-        name: 'area',
+        name: 'Transfer-News',
         icon: <AiOutlineAreaChart />,
       },
 
       {
-        name: 'bar',
+        name: 'Club-News',
         icon: <AiOutlineBarChart />,
       },
+      
       {
-        name: 'pie',
-        icon: <FiPieChart />,
-      },
-      {
-        name: 'financial',
+        name: 'financial-News',
         icon: <RiStockLine />,
       },
+     
+    ],
+  },
+  
+  {
+    title:'Privelage',
+    links:[
       {
-        name: 'color-mapping',
+        name: 'Admin-Privilege',
+        icon: <BsBarChart />,
+      },
+      {
+        name: 'Create-New-Acount',
+        icon: <BsBarChart />,
+      },
+        
+      {
+        name: 'Block-User',
+        icon: <GiLouvrePyramid />,
+      },
+      
+    ]
+  },
+
+  {
+    title:'Chates',
+    links:[
+      {
+        name: 'Group Chate',
+        icon: <BsBarChart />,
+      },
+      {
+        name: 'Users Chate',
+        icon: <GiLouvrePyramid />,
+      },
+      {
+        name: 'Active Chate',
+        icon: <AiOutlineBarChart />,
+      },
+    ]
+  },
+
+
+
+  {
+    title:'Matches',
+    links:[
+      {
+        name: 'live-match',
         icon: <BsBarChart />,
       },
       {
@@ -554,8 +598,27 @@ export const links = [
         name: 'stacked',
         icon: <AiOutlineBarChart />,
       },
-    ],
+    ]
   },
+
+  {
+    title:'Challenge',
+    links:[
+      {
+        name: 'live-Challenge',
+        icon: <BsBarChart />,
+      },
+      {
+        name: 'Players-Challenge',
+        icon: <GiLouvrePyramid />,
+      },
+      {
+        name: 'Club-Challenge',
+        icon: <AiOutlineBarChart />,
+      },
+    ]
+  },
+
 ];
 
 export const cartData = [
