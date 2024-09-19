@@ -9,16 +9,11 @@ import { useState,useEffect } from 'react';
 import authAxois from '../requestHandler';
 import { BiBorderRadius } from 'react-icons/bi';
 
-const Customers = () => {
+const Challenge= () => {
     const [rows,setRows]=useState([]);
-    
     const [open, setOpen] = useState(false);
 const [selectedRow, setSelectedRow] = useState(null);
 const [rowss, setRowss] = useState([]);
-
-
-
-
 
 //// handle priviladge
 const handleEditPrivilege = (row) => {
@@ -32,24 +27,10 @@ const handleShowClick = async(row) => {
   setSelectedRow(row);
   setOpen(true);
  console.log(row.phone)
- const info={
-  phone:row.phone
- }
-
- authAxois.post('/user/admin/privilege',info).then((res)=>{
-    console.log(res.data)
-    //row=res.data.data
-    setRowss(res.data.data)
- }).catch(e=>e)
- 
- /*** 
  authAxois.get(`/user/admin/privilege/${row.phone}`).then((res)=>{
    setRowss(res.data)
  }).catch(e=>e)
- ******/
-
-
-
+ 
 };
 
 
@@ -102,36 +83,52 @@ const style = {
 
   //// fetch data for the privilege
   
-   // Define your columns
-  
-   const columnss = [
+  ///// fetch admin users
+  const columnss = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'post', headerName: 'Post_news', width: 130 },
+    { field: 'post', headerName: 'Post News', width: 130 },
     { field: 'phone', headerName: 'Phone', width: 130 },
-    { field: 'highlight', headerName: 'Post Highlight', width: 150 },
-    { field: 'blockUsers', headerName: 'Block Users', width: 150 },
-    { field: 'createUsers', headerName: 'Create Users', width: 150 },
-    {
-      field: 'user',
-      headerName: 'User Info',
+    {field: 'heighlight',headerName: 'Post Heighlight',width: 150},
+    {field: 'user',headerName: 'Create User',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 190,
-    
+      valueGetter: (value, row) => `${row.password || ''} ${row.password || ''}`
     },
+
     {
-      field: 'editPrivileges',
-      headerName: 'Edit Privilege',
+      field: 'user',
+      headerName: 'Block User',
+      description: 'This column has a value getter and is not isorable.',
+      sortable: false,
+      width: 190,
+      valueGetter: (value, row) => `${row.password || ''} ${row.password || ''}`
+    },
+
+    {
+      
+        field: 'privilages',
+        headerName: 'See User',
+        width: 150,
+        renderCell: (params) => (
+          <Button onClick={() => handleShowClick(params.row)}>Edit</Button>
+        ),
+      
+    },
+
+    {
+      
+      field: 'privilages',
+      headerName: 'Block Chate',
       width: 150,
       renderCell: (params) => (
         <Button onClick={() => handleShowClick(params.row)}>Edit</Button>
       ),
-    },
+    
+  },
+
   ];
   
- 
-
-
  /* 
   const rows = [
     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
@@ -207,7 +204,6 @@ const style = {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
-        getRowId={(rowss) => rowss?.phone}
       />
       </div> 
       </Box>
@@ -217,4 +213,4 @@ const style = {
   )
 }
 
-export default Customers
+export default Challenge

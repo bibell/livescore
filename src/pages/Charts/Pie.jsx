@@ -9,7 +9,8 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import { Header } from '../../components';
 import { useState } from 'react';
 import authAxois from '../../requestHandler';
-
+import {toast,ToastContainer} from 'react-toastify'
+import Skeleton from '@mui/material/Skeleton';
 
 const Pie = () => {
   const [title,setTitle]=useState();
@@ -20,6 +21,7 @@ const Pie = () => {
   const [progress,setProgress]=useState('none')
   const [link,setLink]=useState();
   const [auther,setAuther]=useState();
+  const [loading,setLoading]=useState(true);
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     source: '',
@@ -103,10 +105,13 @@ const fetchData=async()=>{
     }
  
     console.log(info)
-    authAxois.post('/admin/save/heightlight',info).then((res)=>{
+    authAxois.post('/admin/save/clube',info).then((res)=>{
      console.log('user database been send to the backend')
      console.log(res)
-    }).catch(e=>e)
+     toast.success('Your Clube New Uploaded Succesfully...')
+    }).catch((e)=>{
+       toast.error('error during uploading clube news')
+    })
  }
 
 
@@ -115,6 +120,7 @@ const fetchData=async()=>{
   return (
     <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
     <Header category="Club News" title="Club Related News"/>
+    <ToastContainer/>
     <Box>
          <Box>
              <Typography variant='h6'>Source</Typography>
@@ -273,16 +279,80 @@ const fetchData=async()=>{
         );
       })
       ***/}
-      {news?.map((item, index) => {
+
+      {
+  loading ? (
+    <Stack spacing={2}>
+    <Box
+      sx={{
+        backgroundColor: '#fff',
+        padding: '10px',
+        margin: '10px',
+        borderRadius: '10px',
+        position: 'relative',
+      }}
+    >
+      <Skeleton variant="circular" width={50} height={50} /><br/>
+      <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+      <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+      <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+      <Skeleton variant="rectangular" height={50} />
+      <Box
+        sx={{
+          marginTop: '10px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Skeleton variant="rectangular" width="45%" height={36} />
+        <Skeleton variant="rectangular" width="45%" height={36} />
+      </Box>
+    </Box>
+
+<br/>
+<Box
+      sx={{
+        backgroundColor: '#fff',
+        padding: '10px',
+        margin: '10px',
+        borderRadius: '10px',
+        position: 'relative',
+      }}
+    >
+      <Skeleton variant="circular" width={50} height={50} /><br/>
+      <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+      <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+      <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+      <Skeleton variant="rectangular" height={50} />
+      <Box
+        sx={{
+          marginTop: '10px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Skeleton variant="rectangular" width="45%" height={36} />
+        <Skeleton variant="rectangular" width="45%" height={36} />
+      </Box>
+    </Box>
+
+  </Stack>
+
+  
+  ):(    
+      news?.map((item, index) => {
         // Extract video ID from YouTube link
+        /*
         let videoId = item.link.split('v=')[1];
         const ampersandPosition = videoId?.indexOf('&');
         if (ampersandPosition !== -1) {
           videoId = videoId.substring(0, ampersandPosition);
         }
+        **/
 
         // Construct the thumbnail URL
-        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        const thumbnailUrl=''
+       // const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
         return (
           <Stack key={index}>
@@ -371,7 +441,11 @@ const fetchData=async()=>{
 
 
         );
-      })}
+      })
+      
+    )
+      
+      }
 </Box>
 
 {/* Modal for Editing */}

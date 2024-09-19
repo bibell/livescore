@@ -372,7 +372,7 @@ const fetchData=async()=>{
 
         );
       })}
-</Box>
+      </Box>
 
 {/* Modal for Editing */}
 <Modal

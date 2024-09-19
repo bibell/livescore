@@ -18,6 +18,12 @@ const Stacked = () => {
   const [isChecked3, setIsChecked3] = useState(false);
   const [isChecked4, setIsChecked4] = useState(false);
   const [isChecked5, setIsChecked5] = useState(false);
+  const [isChecked6,setIsChecked6]=useState(false);
+  const [isChecked7,setIsChecked7]=useState(false);
+  const [isChecked8,setIsChecked8]=useState(false);
+  const [isChecked9,setIsChecked9]=useState(false);
+  const [isChecked10,setIsChecked10]=useState(false);
+
   const [name,setName]=useState();
   const [phone,setPhone]=useState();
   const [password,setPassword]=useState();
@@ -51,6 +57,26 @@ const Stacked = () => {
    setIsChecked5(!isChecked5);
  };
 
+ const handleCheckbox6 = () => {
+  setIsChecked6(!isChecked6);
+};
+
+const handleCheckbox7 = () => {
+  setIsChecked7(!isChecked7);
+};
+
+const handleCheckbox8 = () => {
+  setIsChecked8(!isChecked8);
+};
+
+const handleCheckbox9 = () => {
+  setIsChecked9(!isChecked9);
+};
+
+const handleCheckbox10 = () => {
+  setIsChecked10(!isChecked10);
+};
+
 const handleCreate=()=>{
   setLoading(true)
   const info={
@@ -62,7 +88,15 @@ const handleCreate=()=>{
     isChecked3:isChecked3,
     isChecked4:isChecked4,
     isChecked5:isChecked5,
-    password:password
+    isChecked6:isChecked6,
+    isChecked7:isChecked7,
+    isChecked8:isChecked8,
+    isChecked9:isChecked9,
+    isChecked10:isChecked10,
+    password:password,
+    catagory_status:'no',
+    clube:'no',
+    league:'no'
   }
 
   console.log(info)
@@ -124,7 +158,13 @@ const handleCreate=()=>{
               color:'black',
               margin:'10px'
            }}>Priviledge</Typography>
-   <Stack direction='horizontal' sx={{xs:'100px',md:'300px'}}>
+   <Stack direction='horizontal' sx={{
+     position:{xs:'fixed',md:'absolute'},
+     width:{xs:'300px',md:'800px'},
+     overflow:{xs:'scroll',md:'none'},
+    
+   }}>
+    <br/><br/>
       <ListItem sx={{
       }}>
         <input type="checkbox" checked={isChecked1} onChange={handleCheckbox1} style={{margin:'5px'}}/>
@@ -138,18 +178,45 @@ const handleCreate=()=>{
       <br />
       <ListItem>
         <input type="checkbox" checked={isChecked3} onChange={handleCheckbox3} style={{margin:'5px'}}/>
-        Create Users
+        Create Users 
       </ListItem>
-      <br />
+      <br/>
       <ListItem>
         <input type="checkbox" checked={isChecked4} onChange={handleCheckbox4} style={{margin:'5px'}}/>
-       Block User
+       Block User - Not Active Yet
       </ListItem>
       <br />
       <ListItem>
         <input type="checkbox" checked={isChecked5} onChange={handleCheckbox5} style={{margin:'5px'}}/>
-       See Chat
+       See Chat - Not Active yet
       </ListItem>
+      <br />
+      <ListItem>
+        <input type="checkbox" checked={isChecked6} onChange={handleCheckbox6} style={{margin:'5px'}}/>
+        Create Adds
+      </ListItem>
+       <br/>
+       <ListItem>
+        <input type="checkbox" checked={isChecked7} onChange={handleCheckbox7} style={{margin:'5px'}}/>
+        Create Catagory
+      </ListItem>
+       <br/>
+       <ListItem>
+        <input type="checkbox" checked={isChecked8} onChange={handleCheckbox8} style={{margin:'5px'}}/>
+        Post Live Match
+      </ListItem>
+       <br/>
+       <ListItem>
+        <input type="checkbox" checked={isChecked9} onChange={handleCheckbox9} style={{margin:'5px'}}/>
+        Post Live Challenge
+      </ListItem>
+       <br/>
+       <ListItem>
+        <input type="checkbox" checked={isChecked10} onChange={handleCheckbox10} style={{margin:'5px'}}/>
+        Post Dynamic Heighlight
+      </ListItem>
+       <br/>
+
     </Stack>
 
        <Box sx={{
@@ -160,7 +227,8 @@ const handleCreate=()=>{
            
            <Typography sx={{
               color:'black',
-              margin:'10px'
+              margin:'10px',
+              marginTop:{xs:'140px',md:'50px'}
            }}>Email</Typography>
            <input style={{
             border:'1px solid black',

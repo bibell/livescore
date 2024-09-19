@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import {ScheduleComponent,Day, Week, WorkWeek,Month,Agenda,Inject
 ,Resize,DragAndDrop} from '@syncfusion/ej2-react-schedule';
-import {scheduleData} from '../data/dummy';
-import {Header} from '../components';
+import {scheduleData} from './data/dummy';
+import {Header} from './components';
 import { Box,Typography,Stack,List,ListItem,TextField,CircularProgress,Button,Modal } from '@mui/material';
 import { useState } from 'react';
-import authAxois from '../requestHandler';
+import authAxois from './requestHandler';
 import Skeleton from '@mui/material/Skeleton';
-
-
-const Calendar = () => {
+import axios from 'axios';
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+import { toast, ToastContainer } from 'react-toastify';
+const Dynamic = () => {
   const [title,setTitle]=useState();
   const [source,setSource]=useState();
   const [open, setOpen] = useState(false); // State to control the Modal
@@ -28,11 +31,19 @@ const Calendar = () => {
     time: '',
     description: '',
   });
+  const [selectedDate,setSelectedDate]=useState();
+  const [rows,setRows]=useState();
+  const [match,setMatch]=useState();
+  const [fixtureId,setFixtureId]=useState(); 
+  const [filter,setFilter]=useState('none');
 
-
-   
  useEffect(()=>{
-    fetchData();  
+    fetchData(); 
+    axios.get('https://backend.habeshalivescore.com/api/football_by_date?date=2024-09-09').then((res)=>{
+        console.log(res.data.data)
+        setRows(res.data.data)
+    }).catch(e=>e)
+
  },[])
  
 
@@ -87,12 +98,15 @@ const handleFormSubmit = () => {
  
  }
 
+const handleDateChange = (date) => {
+  const formattedDate = format(date, 'yyyy-MM-dd'); // Format date as ISO string or any comparable format
+  console.log('Formatted Date:', formattedDate); // Debugging line
+  setSelectedDate(formattedDate)
 
+}
 
-
-
-
-  const handlePost=()=>{
+const handlePost=()=>{
+    setProgress('block')
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
@@ -110,22 +124,34 @@ const handleFormSubmit = () => {
       link:link,
       club:club,
       description:myData,
-      
+      fixtureId:fixtureId,
+      match:match,     
       date: Date().slice(0, 15),
       time: `${hours12}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${period}`, 
      }
   
      console.log(info)
-     authAxois.post('/admin/save/heightlight',info).then((res)=>{
+     authAxois.post('/admin/user/dynamic/heighlight',info).then((res)=>{
       console.log('user database been send to the backend')
       console.log(res)
+      if(res.status===200){
+        toast.success('Heighlight Post Success')
+        setProgress('none')
+      }else{
+         toast.error('Unable to post heighlight')
+      }
+     
      }).catch(e=>e)
   }
+
+const handleFilterByDate=()=>{}
+
 
 
   return (
     <div className='m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl'>
-      <Header category="Heigh light" title="Post Sport Heigh light"/>
+      <ToastContainer/>
+      <Header category="Heigh light" title="Dynamic Clubes Heighlight Post"/>
       <Box>
            <Box>
                <Typography variant='h6'>Source</Typography>
@@ -135,20 +161,22 @@ const handleFormSubmit = () => {
                   width:'320px'
                 }}/>
                 <br/><br/>
-                <Typography variant='h6'>Clube</Typography>
+                <Typography variant='h6'>Game Matchs</Typography>
 
-                <select value={club} onChange={(e)=>{setClub(e.target.value)}} style={{width:'300px',
-                                padding:'10px'
-                }}>
-                     <option>All</option>
-                     <option>Arsenal</option>
-                     <option>Man city</option>
-                     <option>Liverpool</option>
-                     <option>Man United</option>
-                     <option>chellsee</option>
-                     <option>wastham</option>
+                <select value={match}  style={{width:'320px',
+                                               padding:'10px',
+                                               border:'2px solid black'
+                                               }}>
+                     <option>{match}</option>
+                     
                 </select>
                  <br/><br/>
+                <Typography variant='h5' sx={{padding:'5px',margin:'5px'}}>Fixture Id Or Match Id</Typography>
+                <Typography variant='h6' sx={{
+                            padding:'10px',
+                            margin:'10px',
+                            border:'1px solid black',
+                            width:'320px'}}>{fixtureId}</Typography> 
                  <Typography variant='h6'>Title</Typography>
                 <TextField value={title} onChange={(e)=>{setTitle(e.target.value)}} placeholder='Place the Source' sx={{
                   border:'none',
@@ -182,13 +210,14 @@ const handleFormSubmit = () => {
                 marginLeft:'0px',
                 marginTop:'20px',
                 width:'330px'
-              }} onClick={()=>{
-                handlePost()
-                
-               
-                }}><CircularProgress sx={{
+              }} onClick={handlePost}><CircularProgress sx={{
                   position:'absolute',
-                  display:progress
+                  display:progress,
+                  color:"#fff",
+                  width:'20px',
+                  height:'20px',
+                  marginLeft:'130px',
+                  marginTop:'-5px'
                 }}/>Upload</button>
 
            </Box>
@@ -204,11 +233,40 @@ const handleFormSubmit = () => {
   overflow:'scroll',
   borderRadius:'20px'
 }}>
-   <Typography variant='h4' sx={{
    
-   }}>Recent Post</Typography>
    
-
+   <Typography variant='h6'>
+       Filter Games By Dates
+       <DatePicker
+          selected={selectedDate}
+          value={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="EEE MMM dd yyyy"
+          placeholderText="Select Date"
+         
+		  style={{
+			padding:'20px',
+			marginLeft:'50px',
+            width:'150px'
+		  }}
+        />
+        <Button onClick={()=>{
+            setFilter('block')
+            setLoading(true)
+          axios.get(`https://backend.habeshalivescore.com/api/football_by_date_1?date=${selectedDate}`).then((res)=>{
+                console.log(res)
+                setRows(res.data.data)
+                setFilter('none')
+                setLoading(false)
+            }).catch(e=>e)
+        }} sx={{backgroundColor:'red',
+                color:'#fff',
+                width:'200px',
+                padding:'10px',
+                margin:'10px'
+                }}>
+                    <CircularProgress sx={{display:filter}}/>Filter</Button>
+   </Typography>
 
 
    {loading ? (
@@ -239,30 +297,65 @@ const handleFormSubmit = () => {
         <Skeleton variant="rectangular" width="45%" height={36} />
       </Box>
     </Box>
+
+    <Box
+      sx={{
+        backgroundColor: '#fff',
+        padding: '10px',
+        margin: '10px',
+        borderRadius: '10px',
+        position: 'relative',
+      }}
+    >
+      <Skeleton variant="circular" width={50} height={50} /><br/>
+      <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+      <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+      <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+      <Skeleton variant="rectangular" height={50} />
+      <Box
+        sx={{
+          marginTop: '10px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Skeleton variant="rectangular" width="45%" height={36} />
+        <Skeleton variant="rectangular" width="45%" height={36} />
+      </Box>
+    </Box>
+
+
+    <Box
+      sx={{
+        backgroundColor: '#fff',
+        padding: '10px',
+        margin: '10px',
+        borderRadius: '10px',
+        position: 'relative',
+      }}
+    >
+      <Skeleton variant="circular" width={50} height={50} /><br/>
+      <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+      <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+      <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+      <Skeleton variant="rectangular" height={50} />
+      <Box
+        sx={{
+          marginTop: '10px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Skeleton variant="rectangular" width="45%" height={36} />
+        <Skeleton variant="rectangular" width="45%" height={36} />
+      </Box>
+    </Box>
   </Stack>
 ) : (
   // Render actual content when data is loaded
-  news?.map((item, index) => {
+  rows?.map((item, index) => {
     // Ensure that the link exists before processing
-    if (!item.link) {
-      console.error('Link is missing for item:', item);
-      return null;  // Skip this item in case of missing link
-    }
 
-    // Extract video ID from YouTube link
-    let videoId = item.link.split('v=')[1];
-    if (videoId) {
-      const ampersandPosition = videoId.indexOf('&');
-      if (ampersandPosition !== -1) {
-        videoId = videoId.substring(0, ampersandPosition);
-      }
-    } else {
-      console.error('Invalid YouTube link:', item.link);
-      return null;  // Skip this item in case of invalid video ID
-    }
-
-    // Construct the thumbnail URL
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
     return (
       <Stack key={index}>
@@ -276,26 +369,8 @@ const handleFormSubmit = () => {
               position: 'relative',
             }}
           >
-            <img
-              src={thumbnailUrl}
-              style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: '30px',
-              }}
-              alt="YouTube Thumbnail"
-            />
-            <ListItem
-              sx={{
-                position: 'absolute',
-                fontSize: '12px',
-                marginLeft: '60px',
-                marginTop: '-50px',
-                fontWeight: 'bold',
-              }}
-            >
-              {item.source}
-            </ListItem>
+            
+     
 
             <ListItem
               sx={{
@@ -308,42 +383,45 @@ const handleFormSubmit = () => {
             >
               {item.title}
             </ListItem>
-
+  
             <ListItem
               sx={{
-                fontSize: '9px',
-                marginLeft: '60px',
+                cursor:'pointer',
+                fontSize: '15px',
+                marginLeft: '-30px',
                 marginTop: '15px',
               }}
-            >
-              On: {item.date} at {item.time}
-            </ListItem>
-
-            <Typography>{item.description}</Typography>
-
-            {/* Edit and Delete Buttons */}
-            <Box
-              sx={{
-                marginTop: '10px',
-                display: 'flex',
-                justifyContent: 'space-between',
+              onClick={()=>{
+                 console.log("all information included the fixture id")
+                 console.log(item)
+                 setMatch(item.name)
+                 setFixtureId(item.coaches[0].meta.fixture_id)
+                 console.log(item)
               }}
             >
-              <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={() => handleEdit(item)}
-              >
-                Edit
-              </Button>
-              <Button 
-                variant="contained" 
-                color="secondary" 
-                onClick={() => handleDelete(item)}
-              >
-                Delete
-              </Button>
-            </Box>
+<img src={item.participants[0].image_path} style={{
+        width:'60px',
+        height:'60px',
+      
+        padding:'10px',
+        margin:'10px'
+     }}/>
+             {item.name}
+    <img src={item.participants[1].image_path} style={{
+        width:'60px',
+        height:'60px',
+      
+        padding:'10px',
+        margin:'10px'
+     }}/>
+
+
+            </ListItem>
+
+         
+
+            {/* Edit and Delete Buttons */}
+     
           </Box>
         </List>
       </Stack>
@@ -455,4 +533,4 @@ const handleFormSubmit = () => {
   )
 }
 
-export default Calendar
+export default Dynamic

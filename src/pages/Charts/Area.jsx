@@ -75,7 +75,7 @@ const handleFormSubmit = () => {
 const fetchData=async()=>{
  const response=await authAxois.get('/admin/user/heighlight')
  console.log(response.data)
- setNews(response.data.data) 
+ //setNews(response.data.data) 
 }
 
 

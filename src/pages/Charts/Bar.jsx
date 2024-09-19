@@ -9,7 +9,7 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import { Header } from '../../components';
 import { useState } from 'react';
 import authAxois from '../../requestHandler';
-
+import Skeleton from '@mui/material/Skeleton';
 
 const Bar = () => {
   const [title,setTitle]=useState();
@@ -22,6 +22,7 @@ const Bar = () => {
   const [progress,setProgress]=useState('none')
   const [currentItem, setCurrentItem] = useState(null); 
   const [link,setLink]=useState();
+  const [loading,setLoading]=useState(true);
   const [auther,setAuther]=useState();
   const [formData, setFormData] = useState({
     source: '',
@@ -317,6 +318,91 @@ const handleFormChange = (e) => {
       })
       ***/}
        {
+ loading ? (
+  <Stack spacing={2}>
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+
+  
+</Stack>
+ ):(       
  news?.map((item, index) => (
      <Stack key={index}>
          <List>
@@ -388,6 +474,9 @@ const handleFormChange = (e) => {
          </List>
      </Stack>
     ))
+
+  )   
+
     }
 </Box>
 

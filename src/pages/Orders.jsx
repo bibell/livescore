@@ -6,7 +6,7 @@ import {Header} from '../components'
 import {Box, Input, ListItem, TextareaAutosize, TextField, Typography,Stack,List,Button,Modal} from '@mui/material'
 import CircularProgress from '@mui/joy/CircularProgress';
 import { useStateContext } from '../contexts/ContextProvider';
-
+import Skeleton from '@mui/material/Skeleton';
 //import {ToastContainer} from 'react-toastify'
 import { useState } from 'react';
 import authAxois from '../requestHandler';
@@ -15,6 +15,7 @@ const Orders = () => {
    const [title,setTitle]=useState();
    const [name,setName]=useState();
    const [myData,setmyData]=useState();
+   const [loading,setLoading]=useState(true);
    const [myfiles,setMyfiles]=useState(null)
    const [progress,setProgress]=useState('none')
    const [news,setNews]=useState([]);
@@ -82,6 +83,9 @@ const Orders = () => {
 const fetchData=async()=>{
    const response=await authAxois.get('/admin/news')
    console.log(response.data)
+   if(response.data){
+    setLoading(false)
+   }
    setNews(response.data.data) 
 }   
 const handlePost=()=>{
@@ -197,7 +201,7 @@ const onFileUpload = async () => {
                }}
              ></textarea><br/><br/><br/><br/><br/>
 
-              <Typography variant='h6'>Attach Phone</Typography>
+              <Typography variant='h6'>Attach Image</Typography>
               <TextField type='file' onChange={(e)=>{setMyfiles(e.target.files[0])}}/><br/>
 
               <button style={{
@@ -279,6 +283,90 @@ const onFileUpload = async () => {
         */}
 
 {
+loading ? (
+  <Stack spacing={2}>
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+
+  <Box
+    sx={{
+      backgroundColor: '#fff',
+      padding: '10px',
+      margin: '10px',
+      borderRadius: '10px',
+      position: 'relative',
+    }}
+  >
+    <Skeleton variant="circular" width={50} height={50} /><br/>
+    <Skeleton variant="text" sx={{ fontSize: '12px', marginLeft: '60px', marginTop: '-50px' }} width="60%" />
+    <Skeleton variant="text" sx={{ fontSize: '10px', marginLeft: '60px', marginTop: '-30px' }} width="80%" />
+    <Skeleton variant="text" sx={{ fontSize: '9px', marginLeft: '60px', marginTop: '15px' }} width="40%" />
+    <Skeleton variant="rectangular" height={50} />
+    <Box
+      sx={{
+        marginTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Skeleton variant="rectangular" width="45%" height={36} />
+      <Skeleton variant="rectangular" width="45%" height={36} />
+    </Box>
+  </Box>
+
+
+</Stack>
+):(
  news.map((item, index) => (
      <Stack key={index}>
          <List>
@@ -350,7 +438,9 @@ const onFileUpload = async () => {
          </List>
      </Stack>
     ))
-    }
+  )
+
+}
       
         
 </Box>

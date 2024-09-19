@@ -23,6 +23,9 @@ import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
 
+import { useEffect,useState } from 'react';
+import authAxois from '../requestHandler';
+
 export const gridOrderImage = (props) => (
   <div>
     <img
@@ -481,7 +484,7 @@ export const links = [
   },
 
   {
-    title: 'Pages',
+    title: 'Users',
     links: [
       {
         name: 'Post',
@@ -504,6 +507,12 @@ export const links = [
         name: 'Heighlight',
         icon: <AiOutlineCalendar />,
       },
+   
+      {
+        name: 'Dynamic-Heighlight',
+        icon: <AiOutlineCalendar />,
+      },
+
       {
         name: 'adds',
         icon: <BsKanban />,
@@ -613,13 +622,123 @@ export const links = [
         icon: <GiLouvrePyramid />,
       },
       {
-        name: 'Club-Challenge',
+        name: 'club-Challenge',
         icon: <AiOutlineBarChart />,
       },
     ]
   },
 
+  {
+    title:'User Club Follows',
+    links:[
+      {
+        name:'Clube Followers',
+        icon: <RiContactsLine />,
+      },
+      {
+        name:'Players Followers',
+        icon: <RiContactsLine />,
+      },
+      {
+        name:'League Followers',
+        icon: <RiContactsLine />,
+      }
+    ]
+  },
+
+
+  {
+    title:'Create Catagory',
+    links:[
+      {
+        name:'Create-Catagory',
+        icon: <RiContactsLine />,
+      },
+     
+      
+    ]
+  },
+  {
+    title:"Catagory Lists",
+    links:[
+      {
+      
+      },
+    ]
+  }
+
 ];
+
+
+
+/////////////////// links dynamic data
+  // Function to fetch data and push to links array
+/*  
+export const fetchAndAddLinks = async () => {
+  try {
+    const response = await authAxois.get('/admin/catagory/reserve');
+    const fetchedData = response.data.data;
+
+    // Debugging: Log fetched data to understand its structure
+    console.log('Fetched Data:', fetchedData);
+// Check if fetchedData is an array
+if (Array.isArray(fetchedData)) {
+  const newCategory = {
+    title: 'Fetched Category',
+    links: fetchedData.map(item => ({
+      name: item.name, // Adjust this according to your data structure
+      icon: <FiStar />, // Use a default icon or choose based on your data
+    })),
+  };
+
+  links.push(newCategory); // Push the new category into the links array
+} else {
+  console.error('Error: Expected an array but got:', typeof fetchedData);
+}
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+*/
+
+export const fetchAndAddLinks = async () => {
+  try {
+    const response = await authAxois.get('/admin/catagory/reserve');
+    const fetchedData = response.data.data;
+
+    // Debugging: Log fetched data to understand its structure
+    console.log('Fetched Data:', fetchedData);
+
+    // Check if fetchedData is an array
+    if (Array.isArray(fetchedData)) {
+      // Create an array to hold new categories
+      const newCategories = fetchedData.map(item => ({
+        title: '', // Use item.name or another field for the category title
+        links: [
+          {
+            name: item.name, // Adjust this according to your data structure
+            icon: <FiStar />, // Use a default icon or choose based on your data
+          }
+        ],
+      }));
+
+      // Append all new categories to the links array
+      links.push(...newCategories); // Use spread operator to push all elements
+    } else {
+      console.error('Error: Expected an array but got:', typeof fetchedData);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+
+
+
+// Call the function when needed, e.g., during application initialization
+//fetchAndAddLinks();
+
+////////////////// links that is not dynamic data
 
 export const cartData = [
   {

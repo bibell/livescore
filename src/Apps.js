@@ -3,8 +3,6 @@ import {Navbar, Footer, Sidebar, ThemeSettings} from './components';
 import {Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Area, 
 Bar, Pie, Financial, ColorMapping, ColorPicker, Editor, Line} from './pages';
 import './App.css';
-
-
 import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import {FiSettings} from 'react-icons/fi';
 import {TooltipComponent} from '@syncfusion/ej2-react-popups';
@@ -14,8 +12,6 @@ import Login from './login'
 
 
 import './data/style.css'
-import Catagory from './Catatory';
-import Dynamic from './dynamic';
 
 const App = () => {
 
@@ -94,11 +90,6 @@ const App = () => {
                         
                         <Route path="/live-match" element={<Pyramid/>}/>
                         <Route path="/stacked" element={<Stacked/>}/>
-                        <Route path="/Create-Catagory" element={<ColorMapping/>}/>
-                        <Route path='/Dynamic-Heighlight' element={<Dynamic />}/>
-                        
-                        <Route path="/:name" element={<Catagory/>}/>
-                        
                     </Routes>
                 </div>
             </div>
