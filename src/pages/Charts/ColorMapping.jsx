@@ -11,7 +11,7 @@ const ColorMapping = () => {
   const [clube, setClube] = useState('');
   const [league, setLeague] = useState('');
   const [adminuser, setAdminuser] = useState([]);
-  const [files,setMyfiles]=useState();
+  const [files,setMyfiles]=useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
 const handleCreate = (e) => {
@@ -27,15 +27,24 @@ const handleCreate = (e) => {
       clube: clube,
       catagory_status: 'yess',
       league: league,
+      file:files,
       password: password,
     };
 
 
-    //const formData = new FormData();
-    //formData.append('image',files)
-   // formData.append('info',info)
-    authAxois
-      .post('/admin/save/create/catagory', info)
+  console.log(info)
+  const formData = new FormData();
+  formData.append("image",files);
+  formData.append("name",info.name);
+  formData.append("phone",info.phone);
+  formData.append("email",info.email);
+  formData.append("clube",info.clube);
+  formData.append("catagory_status",info.catagory_status)
+  formData.append("league",info.league)
+  formData.append("password",info.password)
+  //console.log(formData)
+  /*** *  
+    authAxois.post('/admin/save/create/catagory',info)
       .then((res) => {
         console.log(res.data);
         if (res.status === 200) {
@@ -51,6 +60,19 @@ const handleCreate = (e) => {
       .finally(() => {
         setIsSubmitting(false);
       });
+
+         ***/
+
+ authAxois.post('/admin/save/create/catagory',formData).then((res)=>{
+     console.log(res.data)
+   if(res.data===200){  
+     toast.success('Category Created Successfully');
+     window.location.reload(); 
+   }
+ 
+    }).catch(e=>e)
+
+
   };
 
   useEffect(() => {
@@ -74,9 +96,9 @@ const handleCreate = (e) => {
         <ToastContainer />
         <form onSubmit={handleCreate}>
           <Box>
-            <Typography>User Name</Typography>
+            <Typography>Clube Name</Typography>
             <TextField
-              placeholder='User Name'
+              placeholder='Clube Name'
               value={name}
               onChange={(e) => setName(e.target.value)}
               sx={{ width: '300px' }}
@@ -90,42 +112,8 @@ const handleCreate = (e) => {
               sx={{ width: '300px' }}
             />
             <br /><br />
-            <Typography sx={{ padding: '10px' }}>League Clube</Typography>
-            <select
-              value={league}
-              onChange={(e) => setLeague(e.target.value)}
-              style={{
-                width: '300px',
-                border: '1px solid black',
-                padding: '10px',
-              }}
-            >
-              <option>Primier League</option>
-              <option>Spain Lalig</option>
-              <option>Bundeslega</option>
-              <option>France League</option>
-              <option>Germen League</option>
-            </select>
-            <br /><br />
-            <Typography sx={{ padding: '10px' }}>Catagory Clube</Typography>
-            <select
-              value={clube}
-              onChange={(e) => setClube(e.target.value)}
-              style={{
-                width: '300px',
-                border: '1px solid black',
-                padding: '10px',
-              }}
-            >
-              <option>Man City</option>
-              <option>Arsenal</option>
-              <option>Man united</option>
-              <option>Liverpool</option>
-              <option>Chelsee</option>
-              <option>Totunam</option>
-              <option>westhum</option>
-            </select>
-            <br /><br />
+      
+         
             <Typography>Your Logo Here</Typography>
             <TextField 
                       type='file' 
@@ -158,9 +146,11 @@ const handleCreate = (e) => {
 
         <Box
           sx={{
-            marginLeft: '500px',
-            marginTop: '-50px',
+            position:'absolute',
+            marginLeft: {xs:'10px',md:'500px'},
+            marginTop:{md:'-40px',xs:'650px'},
             height: '400px',
+           // overflow:'scroll'
           }}
         >
           <Typography
@@ -168,7 +158,7 @@ const handleCreate = (e) => {
             sx={{
               fontSize: '30px',
               fontWeight: 'bold',
-              marginTop: '-670px',
+              marginTop: '-570px',
             }}
           >
             Catagory Lists
@@ -184,9 +174,18 @@ const handleCreate = (e) => {
                     
                   }}
                 >
-                  <Typography variant='h5'>Name: {user.name}</Typography>
-                  <Typography variant='h6'>Leagues: {user.league}</Typography>
-                  <Typography variant='h6'>Clube: {user.clube}</Typography>
+                  <img src={user.image} style={{
+                     width:'100px',
+                     height:'100px',
+                     padding:'20px',
+                     margin:'20px',
+                     borderRadius:'20px'
+                  }}/>
+                  <Typography variant='h5' sx={{
+                     fontWeight:'bold',
+                     marginLeft:'20px'
+                  }}>{user.name}</Typography>
+                  
                 </Box>
               </li>
             ))}

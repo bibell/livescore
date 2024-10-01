@@ -16,6 +16,14 @@ import Login from './login'
 import './data/style.css'
 import Catagory from './Catatory';
 import Dynamic from './dynamic';
+import AllAdds from './alladds';
+import Google from './gogle'
+import Google1 from './gogle1';
+import Company from './company';
+import Company1 from './company1';
+import General from './general'
+import General1 from './general1';
+import Edit from './editadds';
 
 const App = () => {
 
@@ -96,7 +104,17 @@ const App = () => {
                         <Route path="/stacked" element={<Stacked/>}/>
                         <Route path="/Create-Catagory" element={<ColorMapping/>}/>
                         <Route path='/Dynamic-Heighlight' element={<Dynamic />}/>
-                        
+
+                        <Route path='/Advertisment' element={<AllAdds />}/>
+                        <Route path='/google/adds'  element={<Google />}/>
+                        <Route path='/company/adds' element={<Company />}/> 
+                        <Route path='/General/adds' element={<General />}/>
+
+                        <Route path='/General/adds1' element={<General1 />}/>
+                        <Route path='/company/adds1' element={<Company1 />}/>
+                        <Route path='/google/adds1' element={<Google1/>}/>
+                        <Route path='/edit/adds' element={<Edit/>}/>
+
                         <Route path="/:name" element={<Catagory/>}/>
                         
                     </Routes>

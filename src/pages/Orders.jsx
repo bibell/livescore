@@ -149,6 +149,7 @@ const onFileUpload = async () => {
   formData.append("date",info.date)
   formData.append("time",info.time)
   
+  console.log(formData)
   //const newForm=formData.append("image",myfiles)
  
 
@@ -163,7 +164,7 @@ const onFileUpload = async () => {
         setProgress('none')
         //alert('sucess')
         //toast.success('Your news has been updated Successfully')
-        window.location.reload();
+       // window.location.reload();
       }
   } catch (error) {
       console.error('Error uploading file:', error.response.data);

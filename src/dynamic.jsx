@@ -24,6 +24,7 @@ const Dynamic = () => {
   const [auther,setAuther]=useState();
   const [currentItem, setCurrentItem] = useState(null); 
   const [loading, setLoading] = useState(true);
+  const [loadingx,setLoadingx]=useState(true);
   const [formData, setFormData] = useState({
     source: '',
     title: '',
@@ -36,12 +37,21 @@ const Dynamic = () => {
   const [match,setMatch]=useState();
   const [fixtureId,setFixtureId]=useState(); 
   const [filter,setFilter]=useState('none');
+  const [thumbnailUrlOne,setThumbnailUrlOne]=useState();
 
  useEffect(()=>{
     fetchData(); 
+  
+  
     axios.get('https://backend.habeshalivescore.com/api/football_by_date?date=2024-09-09').then((res)=>{
         console.log(res.data.data)
         setRows(res.data.data)
+    }).catch(e=>e)
+    
+    
+
+    authAxois.get('/admin/live-challenge/reserve').then((res)=>{
+        setNews(res.data.data)
     }).catch(e=>e)
 
  },[])
@@ -86,6 +96,7 @@ const handleFormSubmit = () => {
   ));
 };
  
+/** *
  const fetchData=async()=>{
   setLoading(false)
   const response=await authAxois.get('/admin/user/heighlight')
@@ -97,6 +108,52 @@ const handleFormSubmit = () => {
   }
  
  }
+ **/
+
+ const fetchData = async () => {
+  try {
+    setLoadingx(true);
+    
+    /** 
+    const response = await authAxois.get('/admin/user/heighlight');
+    const fetchedData = response.data.data;
+    console.log(fetchedData);
+     setNews(response.data.data)
+     ***/
+    
+     authAxois.get('/admin/user/heighlight').then((res)=>{
+       setNews(res.data.data)
+       if(res.status=200){
+        setLoadingx(false)
+       }
+     }).catch(e=>e)
+    // Assuming your fetched data contains a YouTube URL
+    //const videoLink = fetchedData.youtubeLink; // Change this to the actual field containing the link
+
+    // Extract video ID from the YouTube link
+    //const videoId = videoLink?.split('v=')[1];
+    //const ampersandPosition = videoId.indexOf('&');
+    //if (ampersandPosition !== -1) {
+    //  videoId = videoId.substring(0, ampersandPosition);
+    //}
+
+    // Create the thumbnail URL
+    //const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+   // setThumbnailUrlOne(thumbnailUrl)
+    // You can now set the thumbnail URL to state or display it in your UI
+   /* 
+    setNews({
+      ...fetchedData,
+      thumbnailUrl
+    });
+    */
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    setLoading(false);
+  }
+};
+
 
 const handleDateChange = (date) => {
   const formattedDate = format(date, 'yyyy-MM-dd'); // Format date as ISO string or any comparable format
@@ -129,19 +186,32 @@ const handlePost=()=>{
       date: Date().slice(0, 15),
       time: `${hours12}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${period}`, 
      }
-  
-     console.log(info)
-     authAxois.post('/admin/user/dynamic/heighlight',info).then((res)=>{
-      console.log('user database been send to the backend')
-      console.log(res)
-      if(res.status===200){
-        toast.success('Heighlight Post Success')
-        setProgress('none')
-      }else{
-         toast.error('Unable to post heighlight')
-      }
+  //toast.error('error has been ocured')
+  console.log(info)
      
-     }).catch(e=>e)
+if(match===undefined || fixtureId===undefined || title===undefined || myData===undefined || club===undefined){
+     toast.error('all field is requierd....')
+     document.querySelector('.allfields').innerHTML="All Fields Are requierd"
+     setProgress('none')  
+  }
+  else{
+    console.log(info)
+    authAxois.post('/admin/user/dynamic/heighlight',info).then((res)=>{
+     console.log('user database been send to the backend')
+     console.log(res)
+     if(res.status===200){
+       toast.success('Heighlight Post Success')
+       setProgress('none')
+     }else{
+        toast.error('Unable to post heighlight')
+     }
+    
+    }).catch(e=>e)
+
+  }
+  
+
+
   }
 
 const handleFilterByDate=()=>{}
@@ -154,6 +224,7 @@ const handleFilterByDate=()=>{}
       <Header category="Heigh light" title="Dynamic Clubes Heighlight Post"/>
       <Box>
            <Box>
+              <p className='allfields' style={{color:'red'}}></p>
                <Typography variant='h6'>Source</Typography>
                 <TextField value={auther} onChange={(e)=>{setAuther(e.target.value)}} placeholder='Place the Source' sx={{
                   border:'none',
@@ -189,6 +260,7 @@ const handleFilterByDate=()=>{}
                 borderBottom:'2px solid green',
                 width:'320px'
                }}/>
+               <p className='linkx'></p>
               <br/><br/>
               <Typography variant='h6'>Description</Typography> 
              <textarea placeholder='Your Main Content goose here'
@@ -224,10 +296,10 @@ const handleFilterByDate=()=>{}
   <Box sx={{
   position:{md:'absolute',xs:'relative'},
   backgroundColor:'#f4f4f4',
-  width:'300px',
+  width:{md:'250px',xs:'250px'},
   height:'750px',
-  marginLeft:{md:'450px',xs:'20px'},
-  marginTop:{md:'-730px',xs:'100px'},
+  marginLeft:{md:'350px',xs:'5px'},
+  marginTop:{md:'-750px',xs:'100px'},
   border:'1px solid gray',
   padding:'10px',
   overflow:'scroll',
@@ -431,6 +503,139 @@ const handleFilterByDate=()=>{}
 
 
 </Box>
+
+<Box sx={{
+  position:{md:'absolute',xs:'relative'},
+  backgroundColor:'#fff',
+  width:{md:'250px',xs:"250px"},
+  height:'560px',
+  marginLeft:{md:'630px',xs:'5px'},
+  marginTop:{md:'-750px',xs:'100px'},
+  border:'1px solid gray',
+  padding:'10px',
+  overflow:'scroll',
+  borderRadius:'20px'
+}}>
+   <Typography variant='h4' sx={{
+   
+   }}>Recent Post</Typography>
+     {/*news.map((item, index) => (
+         <Stack>
+             <List>
+             <Box sx={{
+                  backgroundColor:'#f4f4f4',
+                  padding:'10px',
+                  margin:{md:'10px',xs:"3px"},
+                  borderRadius:'10px',
+                  }}> 
+      
+            
+                <img src={thumbnailUrlOne} style={{
+                   width:'50px',
+                   height:'50px',
+                   borderRadius:'30px'
+                }} alt="YouTube Thumbnail"/>
+               
+                 <ListItem key={index} sx={{
+                  position:'absolute',
+                  fontSize:'12px',
+                  marginLeft:'50px',
+                  marginTop:'-50px',
+                  fontWeight:'bold'
+                }}>{item.source}</ListItem>
+
+               <ListItem key={index} sx={{
+                  position:'absolute',
+                  fontSize:'15px',
+                  marginLeft:'50px',
+                  marginTop:'-30px',
+                  
+                }}>{item.title}</ListItem>
+
+                <ListItem sx={{
+                  fontSize:'9px',
+                  marginLeft:'50px',
+                  marginTop:'0px'
+                }}>On :{item.date} at {item.time}</ListItem>
+                <Typography>{item.body}</Typography>      
+               </Box>
+             </List>
+         </Stack>
+          // Assuming each news item has a "title" field
+        )) */}
+
+<Stack>
+      {loadingx ? (
+        // Display Skeleton while data is loading
+        <Stack spacing={1}>
+          {[...Array(3)].map((_, index) => (
+            <Box
+              key={index}
+              sx={{
+                backgroundColor: '#f4f4f4',
+                padding: '10px',
+                margin: { md: '10px', xs: '3px' },
+                borderRadius: '10px',
+              }}
+            >
+              <Skeleton variant="circular" width={50} height={50} />
+              <Skeleton variant="text" width={100} />
+              <Skeleton variant="text" width={200} />
+              <Skeleton variant="rectangular" width="100%" height={60} />
+            </Box>
+          ))}
+        </Stack>
+      ) : (
+        // Render the actual news data after loading
+        news?.map((item, index) => (
+          <Stack key={index}>
+            <List>
+              <Box
+                sx={{
+                  backgroundColor: '#f4f4f4',
+                  padding: '10px',
+                  margin: { md: '10px', xs: '3px' },
+                  borderRadius: '10px',
+                }}
+              >
+           
+                <ListItem
+                  sx={{
+                    position: 'absolute',
+                    fontSize: '12px',
+                    marginLeft: '10px',
+                    marginTop: '5px',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {item.title}
+                </ListItem>
+        
+                <ListItem
+                  sx={{
+                    fontSize: '9px',
+                    marginLeft: '50px',
+                    marginTop: '5px',
+                  }}
+                >
+                  On: {item.date} at {item.time}
+                </ListItem>
+                <Typography sx={{
+                   marginTop:'10px'
+                }}>{item.description}</Typography>
+                <Button onClick={()=>{setOpen(true)}}>Edit</Button>
+                <Button>Delete</Button>
+              </Box>
+            </List>
+          </Stack>
+        ))
+      )}
+    </Stack>
+
+
+
+</Box>
+
 
 {/* Modal for Editing */}
 <Modal

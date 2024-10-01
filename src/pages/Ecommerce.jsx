@@ -258,6 +258,24 @@ fetch();
                           textAlign:'center'
                        }}>Ads</p></div>
 
+<div className='ads' style={{
+                        width:'250px',
+                        height:'150px',
+                        backgroundColor:'#fff',
+                        padding:'20px',
+                        cursor:'pointer',
+                        margin:'10px'}}  onClick={()=>{navigate('/Advertisment')}}>
+                          <MdCampaign style={{
+                            fontSize:'30px',
+                            margin:'auto'
+                          }}/>
+                          <p style={{
+                          fontSize:'20px',
+                          fontWeight:'bold',
+                          marginTop:'30px',
+                          textAlign:'center'
+                       }}>All Advertizment</p></div>
+
 
 
                                           
@@ -378,10 +396,16 @@ fetch();
                         margin: 'auto',
                                    }}>
 
-                      <img src='' alt=''/>
+                      <img src={item.image} style={{width:'50px',
+                                                    height:'50px',
+                                                    borderRadius:'50px',
+                                                    marginLeft:'30px',
+                                                    marginTop:'-20px'}} alt=''/><br/>
                       <Typography sx={{
-                         marginLeft:'-90px'
-                      }}>{item.name}</Typography>
+                         marginLeft:'-60px',
+                         marginTop:'-2px',
+                         fontWeight:'bold',
+                      }}><br/><br/>{item.name}</Typography>
                     </ListItem> 
               </li>
            </ul>

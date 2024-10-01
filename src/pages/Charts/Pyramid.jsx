@@ -192,7 +192,8 @@ const onFileUpload=async()=>{
 
 
 const fetch=()=>{
-   authAxois.get('/admin/save/livematch').then((res)=>{
+  //admin/save/live-match
+   authAxois.get('/admin/save/live-match').then((res)=>{
     console.log(res.data)
     setLoading(false);
     setNews(res.data.data)
@@ -246,7 +247,7 @@ useEffect(()=>{
   position:{md:'absolute',xs:'relative'},
   backgroundColor:'#fff',
   width:{xs:'250px',md:'250px',xl:'400px'},
-  height:'760px',
+  height:'800px',
   marginLeft:{md:'320px',xs:'20px'},
   marginTop:{md:'-850px',xs:'100px'},
   border:'1px solid gray',
@@ -307,18 +308,10 @@ news?.map((item, index) => {
                   margin: '10px',
                   borderRadius: '10px',
                   position: 'relative',
-                  width:{xs:'300px',md:'300px'}
+                  width:{xs:'300px',md:'200px'}
                 }}
               >
-                <img
-                  src={item.images}
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '30px',
-                  }}
-                  alt="YouTube Thumbnail"
-                />
+              
                 <ListItem
                   sx={{
                     position: 'absolute',
@@ -328,26 +321,36 @@ news?.map((item, index) => {
                     fontWeight: 'bold',
                   }}
                 >
-                 <Typography sx={{backgroundColor:'rgb(13, 110, 117)',
-                                 color:'#fff',
-                                 padding:'5px',
-                                 borderRadius:'5px'}}>{item.firstTeamName}</Typography> Vs 
-              <Typography sx={{backgroundColor:'gold',
-                               padding:'5px',
-                               borderRadius:'5px',
-                color:'black'}}>{item.secondTeamName}</Typography>
+             <img src={item.homeTeam} style={{
+               position:'absolute',
+               width:'40px',
+               height:"40px",
+               marginLeft:'-70px',
+               marginTop:'150px'
+               
+             }} alt=''/>           
                 </ListItem>
         
 
                 <ListItem
                   sx={{
-                    fontSize: '9px',
+                    fontSize: '15px',
                     marginLeft: '60px',
+                    width:'100px',
                     marginTop: '-5px',
                   }}
                 >
-                  On: {item.data} at {item.time}
+                  {item.matchName}
                 </ListItem>
+
+                <img src={item.awayTeam} style={{
+                   position:'absolute',
+                   width:'40px',
+                   height:'40px',
+                   borderRadius:'50px',
+                   marginLeft:'150px',
+                   marginTop:'-85px'
+                }} alt=''/>
 
                  
                 <ListItem
@@ -360,7 +363,7 @@ news?.map((item, index) => {
                     color:'black'
                   }}
                 >
-                  {item.link}
+                  Posted On{item.postedDate} <br/>At {item.postedTime}
                 </ListItem><br/><br/>
 
                 {/* Edit and Delete Buttons */}
@@ -372,12 +375,27 @@ news?.map((item, index) => {
                   }}
                 >
            
+           <Button 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => setOpen(true)}
+                    sx={{
+                      width:'30%',
+                      border:'none',
+                      backgroundColor:'#001632',
+                      color:'#fff'
+
+                    }}
+                  >
+                    Edit
+                  </Button>
+
                   <Button 
                     variant="contained" 
                     color="secondary" 
                     onClick={() => handleDelete(item)}
                     sx={{
-                      width:'100%',
+                      width:'30%',
                       border:'1px solid red',
                       backgroundColor:'#fff',
                       color:'red'
@@ -405,12 +423,13 @@ news?.map((item, index) => {
   position:{md:'absolute',xs:'relative'},
   backgroundColor:'#f4f4f4',
   width:{xs:'200px',md:'250px'},
-  height:'600px',
+  height:'800px',
   marginLeft:{md:'600px',xs:'20px'},
   marginTop:{md:'-850px',xs:'100px'},
   border:'1px solid gray',
   padding:'10px',
   overflow:'scroll',
+  overflowX:'none',
   borderRadius:'20px'
 }}>
    
@@ -642,7 +661,7 @@ news?.map((item, index) => {
     }}
   >
     <Typography id="edit-modal-title" variant="h6" component="h2">
-      Edit News Item
+      Edit Live Match Post
     </Typography>
 
     <TextField

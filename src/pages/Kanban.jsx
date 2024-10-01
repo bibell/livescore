@@ -214,18 +214,13 @@ const onFileUpload = async () => {
                   }}> 
       
             
-                <img src={item.imgUrl} style={{
-                   width:'50px',
-                   height:'50px',
-                   borderRadius:'30px'
-                }}/>
                  <ListItem key={index} sx={{
                   position:'absolute',
                   fontSize:'12px',
                   marginLeft:'50px',
                   marginTop:'-50px',
                   fontWeight:'bold'
-                }}>{item.source}</ListItem>
+                }}>{item.matchName}</ListItem>
 
                <ListItem key={index} sx={{
                   position:'absolute',
